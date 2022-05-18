@@ -1,13 +1,16 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
+import { NiceCell, TypeCell } from '../interfaces/nice-cell.interface.class';
 
 @Component({
-  selector: 'app-cell-minesweeper',
+  selector: 'cell-minesweeper',
   templateUrl: './cell-minesweeper.component.html',
   styleUrls: ['./cell-minesweeper.component.scss']
 })
 export class CellMinesweeperComponent implements OnInit {
-
-  constructor() { }
+  @Input()cellId:NiceCell;
+  constructor() {
+    this.cellId = new NiceCell(true,TypeCell.BLANK,0);
+   }
 
   ngOnInit(): void {
   }

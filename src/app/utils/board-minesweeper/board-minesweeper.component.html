@@ -1,7 +1,7 @@
 <div class="tablero">
     <div *ngFor="let row of tablero" class="row">
         <div *ngFor="let cell of row" class="row-nested">
-            {{cell}}
+            <cell-minesweeper [cellId]="cell"></cell-minesweeper>
         </div>
     </div>
 </div>

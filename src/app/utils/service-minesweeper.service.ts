@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { of, map, tap } from 'rxjs';
 import { apprules } from './app-rules.rules';
+import { NiceCell, TypeCell } from './interfaces/nice-cell.interface.class';
 
 @Injectable({
   providedIn: 'root'
@@ -12,30 +13,29 @@ export class ServiceMinesweeperService {
 
       }
       prepararJuego(){
-        this.tablero= Array(apprules.tamano).fill(0);
+        this.tablero= Array(apprules.tamano).fill([]);
         for (let index = 0; index < this.tablero.length; index++) {
-          this.tablero[index]=Array(apprules.tamano).fill(0);
+          this.tablero[index]=Array(apprules.tamano).fill(new NiceCell(true,TypeCell.BLANK,0));
         }
         this.agregarMinas(this.tablero);
         this.agregarnumeros(this.tablero);
         console.log(this.tablero);
       }
+      
+      
 
- 
-
-      private agregarMinas(arr: number[][]) {
+      private agregarMinas(arr: NiceCell[][]) {
+        
         for (let i = 0; i < apprules.tamano / 2; i++) {
-          arr[this.numeroAleatorio()][this.numeroAleatorio()] = apprules.mine;
-        }
-        return arr;
-      };
+            arr[this.numeroAleatorio()][this.numeroAleatorio()] = new NiceCell(true,TypeCell.MINE,-1);
+        }     
+    }
 
 
-
-    private agregarnumeros(arr:number[][]) {
+    private agregarnumeros(arr:NiceCell[][]) {
       for (let ri = 0; ri < apprules.tamano; ri++) {
         for (let ci = 0; ci < apprules.tamano; ci++) {
-          if (arr[ri][ci] === apprules.mine) {
+          if (arr[ri][ci].getType() === TypeCell.MINE ) {
             this.marcarlugar(arr, ri - 1, ci + 1);
             this.marcarlugar(arr, ri - 1, ci);
             this.marcarlugar(arr, ri - 1, ci - 1);
@@ -47,17 +47,29 @@ export class ServiceMinesweeperService {
           }
         }
       }
-      return arr;
     };
-    private marcarlugar = (arr:number[][], x: number, y: number) => {
-      arr[x] !== undefined && arr[x][y] !== undefined
-        ? (arr[x][y] += arr[x][y] === apprules.mine ? 0 : 1)
-        : () => {};
+    private marcarlugar = (arr:NiceCell[][], x: number, y: number) => {
+      //console.log(arr[x][y].type);
+      if (arr[x] !== undefined && arr[x][y] !== undefined && arr[x][y].getType() !== TypeCell.MINE) {
+        //arr[x][y]= new NiceCell(true)
+        if (arr[x][y].getType() === TypeCell.BLANK) {
+         // console.log(arr[x][y].getType());
+          
+          arr[x][y]= new NiceCell(true,TypeCell.NUM,1);
+        }
+        if (arr[x][y].getType() === TypeCell.NUM) {
+          arr[x][y].addNumb(1)
+        }
+      }
+      
+      
+        
     }
-    private numeroAleatorio = () =>
+    private numeroAleatorio()
     {
       return Math.floor(Math.random() * Math.floor(apprules.tamano));
     }
-    tablero: number[][];
+    tablero: any[][];
+    
 }
 // totalmente no inspirado en https://www.learnrxjs.io/learn-rxjs/recipes/mine-sweeper-game 
