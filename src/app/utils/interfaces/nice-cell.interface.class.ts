@@ -19,6 +19,12 @@ export class NiceCell{
     toString(){
         return ''+this.numero;
     }
+    get hide():boolean{
+        return this.isHide;
+    }
+    setHide(hide:boolean){
+        this.isHide=hide;
+    }
 
     
 

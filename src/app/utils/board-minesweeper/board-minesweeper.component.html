@@ -1,7 +1,7 @@
 <div class="tablero">
     <div *ngFor="let row of tablero" class="row">
         <div *ngFor="let cell of row" class="row-nested">
-            <cell-minesweeper [cellId]="cell"></cell-minesweeper>
+            <cell-minesweeper [cellId]="cell" (onClickMe)="onCellClicked($event)"></cell-minesweeper>
         </div>
     </div>
 </div>

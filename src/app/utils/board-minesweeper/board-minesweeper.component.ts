@@ -1,4 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { NiceCell } from '../interfaces/nice-cell.interface.class';
 import { ServiceMinesweeperService } from '../service-minesweeper.service';
 
 @Component({
@@ -20,6 +21,11 @@ export class BoardMinesweeperComponent implements OnInit,OnDestroy {
   }
   get tablero(){
     return this.serv.tablero;
+  }
+  onCellClicked(evnt:NiceCell){
+    console.log(evnt);
+    evnt.setHide(false);
+    
   }
 
 }

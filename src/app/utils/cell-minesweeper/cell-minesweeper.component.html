@@ -1,4 +1,4 @@
 
-<div class="cell">
+<div class="cell" [ngClass]="{'emptycell': cellId.hide}" (click)="onClickCell()">
     {{cellId.num}}
 </div>
