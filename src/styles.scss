@@ -1,1 +1,270 @@
 /* You can add global styles to this file, and also import other style files */
+@mixin noselect {
+    -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+     -khtml-user-select: none; /* Konqueror HTML */
+       -moz-user-select: none; /* Old versions of Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome, Edge, Opera and Firefox */
+}
+.notvisible{
+    display: none;
+}
+.visible{
+    display: inherit;
+}
+.full{
+    width: 100%;
+    height: 100%;
+}
+
+body{
+    background-color: var(--nv-site-bg);
+    color: var(--nv-text-color);
+    font-size: var(--bodyFontSize);
+    line-height: var(--bodyLineHeight);
+    letter-spacing: var(--bodyLetterSpacing);
+    font-family: var(--bodyFontFamily),var(--nv-fallback-ff);
+    text-transform: var(--bodyTextTransform);
+    font-weight: var(--bodyFontWeight);
+    overflow-x: hidden;
+    direction: ltr;
+    margin: 0;
+    width: 100%;
+
+}
+.wrapper {
+    display: flex;
+    width: 100%;
+    min-height: 100vh;
+    flex-direction: column;
+    position: relative;
+    transition: all .3s cubic-bezier(.79,.14,.15,.86);
+}
+/* NAV */
+
+.container {
+    width: 100%;
+    padding-right: 15px;
+    padding-left: 15px;
+    margin: 0 auto;
+    max-width: var(--container);
+}
+.block-plataform{
+    height: 80px;
+}
+.semi-block-plataform{
+    height: 40px;
+}
+.dualcolumn{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-column-gap: 1em;
+    align-items: center;
+}
+h1{
+    font-size: var(--h1FontSize);
+    line-height: var(--h1LineHeight);
+    letter-spacing: var(--h1LetterSpacing);
+}
+h2{
+    font-size: var(--h2FontSize);
+    line-height: var(--h2LineHeight);
+    letter-spacing: var(--h2LetterSpacing);
+}
+h3{
+    font-size: var(--h3FontSize);
+    line-height: var(--h3LineHeight);
+    letter-spacing: var(--h3LetterSpacing);
+}
+h4{
+    font-size: var(--h4FontSize);
+    line-height: var(--h4ineHeight);
+    letter-spacing: var(--h4LetterSpacing);
+}
+h5{
+    font-size: var(--h5FontSize);
+    line-height: var(--h5LineHeight);
+    letter-spacing: var(--h5LetterSpacing);
+}
+h6{
+    font-size: var(--h6FontSize);
+    line-height: var(--h6LineHeight);
+    letter-spacing: var(--h6LetterSpacing);
+}
+:root {
+    --container: 1170px;
+    --postWidth: 100%;
+    --btnPadding: 16px 35px;
+    --primaryBtnPadding: 16px 35px;
+    --secondaryBtnPadding: 16px 35px;
+    --btnFs: 16px;
+    --btnLineHeight: 1.6em;
+    --bodyFontSize: 17px;
+    --bodyLineHeight: 1.7em;
+    --bodyLetterSpacing: 0px;
+    --h1FontSize: 70px;
+    --h1LineHeight: 1.3em;
+    --h1LetterSpacing: 0px;
+    --h2FontSize: 50px;
+    --h2LineHeight: 1.3em;
+    --h2LetterSpacing: 0px;
+    --h3FontSize: 24px;
+    --h3LineHeight: 1.3em;
+    --h3LetterSpacing: 0px;
+    --h4FontSize: 20px;
+    --h4LineHeight: 1.3em;
+    --h4LetterSpacing: 0px;
+    --h5FontSize: 16px;
+    --h5LineHeight: 1.3em;
+    --h5LetterSpacing: 0px;
+    --h6FontSize: 16px;
+    --h6LineHeight: 1.3em;
+    --h6LetterSpacing: 0px;
+}
+:root {
+    --container: 748px;
+    --postWidth: 100%;
+    --primaryBtnBg: var(--nv-secondary-accent);
+    --secondaryBtnBg: var(--nv-primary-accent);
+    --primaryBtnHoverBg: var(--nv-secondary-accent);
+    --secondaryBtnHoverBg: var(--nv-primary-accent);
+    --primaryBtnColor: var(--nv-text-color);
+    --secondaryBtnColor: var(--nv-text-dark-bg);
+    --primaryBtnHoverColor: var(--nv-text-color);
+    --secondaryBtnHoverColor: var(--nv-text-dark-bg);
+    --primaryBtnBorderRadius: 0;
+    --secondaryBtnBorderRadius: 0;
+    --btnPadding: 16px 35px;
+    --primaryBtnPadding: 16px 35px;
+    --secondaryBtnPadding: 16px 35px;
+    --btnFs: 14px;
+    --btnLineHeight: 1.6em;
+    --bodyFontFamily: Poppins;
+    --bodyFontSize: 15px;
+    --bodyLineHeight: 1.6em;
+    --bodyLetterSpacing: 0px;
+    --bodyFontWeight: 400;
+    --bodyTextTransform: none;
+    --headingsFontFamily: Poppins;
+    --h1FontSize: 39px;
+    --h1FontWeight: 600;
+    --h1LineHeight: 1.2em;
+    --h1LetterSpacing: 0px;
+    --h1TextTransform: none;
+    --h2FontSize: 30px;
+    --h2FontWeight: 600;
+    --h2LineHeight: 1.3em;
+    --h2LetterSpacing: 0px;
+    --h2TextTransform: none;
+    --h3FontSize: 20px;
+    --h3FontWeight: 600;
+    --h3LineHeight: 1.3em;
+    --h3LetterSpacing: 0px;
+    --h3TextTransform: none;
+    --h4FontSize: 16px;
+    --h4FontWeight: 600;
+    --h4LineHeight: 1.3em;
+    --h4LetterSpacing: 0px;
+    --h4TextTransform: none;
+    --h5FontSize: 14px;
+    --h5FontWeight: 600;
+    --h5LineHeight: 1.3em;
+    --h5LetterSpacing: 0px;
+    --h5TextTransform: none;
+    --h6FontSize: 14px;
+    --h6FontWeight: 600;
+    --h6LineHeight: 1.3em;
+    --h6LetterSpacing: 0px;
+    --h6TextTransform: none;
+    --formFieldBorderWidth: 2px;
+    --formFieldBorderRadius: 3px;
+    --formFieldBgColor: var(--nv-site-bg);
+    --formFieldBorderColor: #dddddd;
+    --formFieldColor: var(--nv-text-color);
+    --formFieldPadding: 10px 12px;
+}
+
+
+
+
+@media (min-width: 960px){
+    :root {
+        --container: 1170px;
+        --postWidth: 100%;
+        --btnPadding: 16px 35px;
+        --primaryBtnPadding: 16px 35px;
+        --secondaryBtnPadding: 16px 35px;
+        --btnFs: 16px;
+        --btnLineHeight: 1.6em;
+        --bodyFontSize: 17px;
+        --bodyLineHeight: 1.7em;
+        --bodyLetterSpacing: 0px;
+        --h1FontSize: 70px;
+        --h1LineHeight: 1.3em;
+        --h1LetterSpacing: 0px;
+        --h2FontSize: 50px;
+        --h2LineHeight: 1.3em;
+        --h2LetterSpacing: 0px;
+        --h3FontSize: 24px;
+        --h3LineHeight: 1.3em;
+        --h3LetterSpacing: 0px;
+        --h4FontSize: 20px;
+        --h4LineHeight: 1.3em;
+        --h4LetterSpacing: 0px;
+        --h5FontSize: 16px;
+        --h5LineHeight: 1.3em;
+        --h5LetterSpacing: 0px;
+        --h6FontSize: 16px;
+        --h6LineHeight: 1.3em;
+        --h6LetterSpacing: 0px;
+    }
+}
+@media screen and (max-width: 840px) {
+    .dualcolumn{
+        display: grid;
+        grid-row-gap: 10%;
+        grid-column: 1fr;
+        grid-template-columns: 1fr;
+        width: 100%
+    }
+    .container{
+        width: 100%;
+        padding: 5px;
+        margin: 0;
+    }
+}
+@media (min-width: 576px){
+    :root {
+        --container: 992px;
+        --postWidth: 100%;
+        --btnPadding: 16px 35px;
+        --primaryBtnPadding: 16px 35px;
+        --secondaryBtnPadding: 16px 35px;
+        --btnFs: 14px;
+        --btnLineHeight: 1.6em;
+        --bodyFontSize: 16px;
+        --bodyLineHeight: 1.6em;
+        --bodyLetterSpacing: 0px;
+        --h1FontSize: 55px;
+        --h1LineHeight: 1.3em;
+        --h1LetterSpacing: 0px;
+        --h2FontSize: 35px;
+        --h2LineHeight: 1.3em;
+        --h2LetterSpacing: 0px;
+        --h3FontSize: 20px;
+        --h3LineHeight: 1.3em;
+        --h3LetterSpacing: 0px;
+        --h4FontSize: 16px;
+        --h4LineHeight: 1.3em;
+        --h4LetterSpacing: 0px;
+        --h5FontSize: 14px;
+        --h5LineHeight: 1.3em;
+        --h5LetterSpacing: 0px;
+        --h6FontSize: 14px;
+        --h6LineHeight: 1.3em;
+        --h6LetterSpacing: 0px;
+    }
+}
+
