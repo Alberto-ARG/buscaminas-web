@@ -1,6 +1,6 @@
 export const apprules = {
     mine:9,
-    tamano :8
+    tamano :16
 };
 /*
 Nivel principiante: 8 × 8 casillas y 10 minas.
