@@ -18,7 +18,7 @@ export class ServiceMinesweeperService {
         }
         this.agregarMinas(this.tablero);
         this.agregarnumeros(this.tablero);
-        //console.log(this.tablero);
+        console.log(this.tablero);
       }
 
  
@@ -60,3 +60,4 @@ export class ServiceMinesweeperService {
     }
     tablero: number[][];
 }
+// totalmente no inspirado en https://www.learnrxjs.io/learn-rxjs/recipes/mine-sweeper-game 

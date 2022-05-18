@@ -1,0 +1,14 @@
+.tablero{
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+    & .row{
+        display: flex;
+        justify-content: space-between;
+        & .row-nested{
+            display: flex;
+            justify-content: space-between;
+            flex-direction: column;
+        }
+    }
+}

@@ -1,1 +1,7 @@
-<p>board-minesweeper works!</p>
+<div class="tablero">
+    <div *ngFor="let row of tablero" class="row">
+        <div *ngFor="let cell of row" class="row-nested">
+            {{cell}}
+        </div>
+    </div>
+</div>
