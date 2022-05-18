@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'app-board-minesweeper',
+  selector: 'board-minesweeper',
   templateUrl: './board-minesweeper.component.html',
   styleUrls: ['./board-minesweeper.component.scss']
 })
