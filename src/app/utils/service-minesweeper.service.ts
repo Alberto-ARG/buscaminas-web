@@ -17,14 +17,14 @@ export class ServiceMinesweeperService {
     prepararJuego(){
       
         this.tablero= Array(apprules.tamano).fill(0);
-        for (let index = 0; index < this.tablero.length; index++) {
+        for (let j = 0; j < this.tablero.length; j++) {
           const array:NiceCell[] =[];
-          for (let index = 0; index < apprules.tamano; index++) {
-            let cell = new NiceCell(true,TypeCell.BLANK,0,this.generarId());//la misma instancia esta en el array y en el mapa
+          for (let l = 0; l < apprules.tamano; l++) {
+            let cell = new NiceCell(true,TypeCell.BLANK,0,this.generarId(),j,l);//la misma instancia esta en el array y en el mapa
             this.referenciasTablero.set(cell.myId,cell);
             array.push(cell);            
           }
-          this.tablero[index]=array;
+          this.tablero[j]=array;
         }
         this.agregarMinas(this.tablero);
         this.agregarnumeros(this.tablero);
@@ -35,10 +35,12 @@ export class ServiceMinesweeperService {
 
     private agregarMinas(arr: NiceCell[][]) {
         
-        for (let i = 0; i < apprules.tamano ; i++) {
-          let cell =new NiceCell(true,TypeCell.MINE,-1,this.generarId())
+        for (let i = 0; i < apprules.tamano ; i++) {//ajustar a futuro
+          let x = this.numeroAleatorio();
+          let y = this.numeroAleatorio();
+          let cell =new NiceCell(true,TypeCell.MINE,-1,this.generarId(),x,y)
           this.referenciasTablero.set(cell.myId,cell);
-            arr[this.numeroAleatorio()][this.numeroAleatorio()] = cell;
+            arr[x][y] = cell;
         }     
     }
 
@@ -65,7 +67,7 @@ export class ServiceMinesweeperService {
         //arr[x][y]= new NiceCell(true)
         if (arr[x][y].getType() === TypeCell.BLANK) {
          // console.log(arr[x][y].getType());
-         let cell =new NiceCell(true,TypeCell.NUM,0,this.generarId())
+         let cell =new NiceCell(true,TypeCell.NUM,0,this.generarId(),x,y)
          this.referenciasTablero.set(cell.myId,cell);
           arr[x][y]= cell;
         }

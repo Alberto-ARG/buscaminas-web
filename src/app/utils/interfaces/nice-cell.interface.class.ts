@@ -4,7 +4,7 @@ export class NiceCell{
    
    
 
-    constructor(private isHide:boolean,private type : TypeCell, private numero :number,private idUnico:string){
+    constructor(private isHide:boolean,private type : TypeCell, private numero :number,private idUnico:string,private x:number, private y:number){
        
     }
     
