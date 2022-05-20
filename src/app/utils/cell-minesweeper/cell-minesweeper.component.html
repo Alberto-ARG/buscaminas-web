@@ -1,4 +1,11 @@
 
-<div [id]="cellId.myId" class="cell" [ngClass]="{'emptycell': cellId.hide}">
-    {{cellId.num}}
+<div [id]="cellId.myId" class="cell">
+ 
+
+    <div *ngIf="!cellId.hide" class=" somecell">
+        {{cellId.num}}
+    </div>
+    <div *ngIf="cellId.hide" class="  emptycell">
+        <br>
+    </div>
 </div>

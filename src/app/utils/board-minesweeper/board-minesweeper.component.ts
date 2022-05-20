@@ -27,15 +27,23 @@ export class BoardMinesweeperComponent implements OnInit,OnDestroy {
       map((data)=>{
         let domId = this.getIDFromTarget(data.target);//a este punto no puede ser null el EventTarget
         let item = this.serv.referenciasTablero.get(domId);
+      
         return {type:data.type,id:domId,item};//por pura comodidad
       }),
-      takeWhile(it => it.item?.getType() != TypeCell.MINE),//la suerte toca la puerta    
       tap((data)=>{
-        console.log(data);
-        
-      })
+       this.calcularVacio(data as CellResult);
+      }),
+      takeWhile(it => it.item?.getType() != TypeCell.MINE),//la suerte toca la puerta   
+     
+      //finalize()
+     
     );
     
+  }
+  private calcularVacio(item :CellResult){
+      console.log(item);
+      item.item.setHide(false)
+      
   }
   private getIDFromTarget(element:EventTarget | null){
     let item = element as any;//cosas del intelsense ?
@@ -44,9 +52,7 @@ export class BoardMinesweeperComponent implements OnInit,OnDestroy {
   }
   
 
-  ngOnInit(): void {
-    this._gamecore$.pipe(takeUntil(this._destroyer$)).subscribe()
-  }
+
   private isFromTable(element:EventTarget | null){
     if (element==null) {
       return false;
@@ -58,7 +64,9 @@ export class BoardMinesweeperComponent implements OnInit,OnDestroy {
     return this.serv.tablero;
   }
 
-
+  ngOnInit(): void {
+    this._gamecore$.pipe(takeUntil(this._destroyer$)).subscribe()
+  }
   ngOnDestroy(): void {
 
     this._destroyer$.complete();
@@ -66,4 +74,9 @@ export class BoardMinesweeperComponent implements OnInit,OnDestroy {
   
   private _gamecore$: Observable<any>;
   private _destroyer$:Subject<any>;
+}
+interface CellResult{
+  type:string,
+  id:string,
+  item:NiceCell
 }
