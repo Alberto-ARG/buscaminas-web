@@ -11,20 +11,24 @@ export class ServiceMinesweeperService {
 
     constructor() {
       this.tablero=[];
+      this.referenciasTablero = new Map()//mas facil de buscar con un mapa que un doble for
     }
 
     prepararJuego(){
+      
         this.tablero= Array(apprules.tamano).fill(0);
         for (let index = 0; index < this.tablero.length; index++) {
           const array:NiceCell[] =[];
           for (let index = 0; index < apprules.tamano; index++) {
-            array.push(new NiceCell(true,TypeCell.BLANK,0,this.generarId()));            
+            let cell = new NiceCell(true,TypeCell.BLANK,0,this.generarId());//la misma instancia esta en el array y en el mapa
+            this.referenciasTablero.set(cell.myId,cell);
+            array.push(cell);            
           }
           this.tablero[index]=array;
         }
         this.agregarMinas(this.tablero);
         this.agregarnumeros(this.tablero);
-        console.log(this.tablero);
+        //console.log(this.tablero);
       }
       
       
@@ -32,7 +36,9 @@ export class ServiceMinesweeperService {
     private agregarMinas(arr: NiceCell[][]) {
         
         for (let i = 0; i < apprules.tamano ; i++) {
-            arr[this.numeroAleatorio()][this.numeroAleatorio()] = new NiceCell(true,TypeCell.MINE,-1,this.generarId());
+          let cell =new NiceCell(true,TypeCell.MINE,-1,this.generarId())
+          this.referenciasTablero.set(cell.myId,cell);
+            arr[this.numeroAleatorio()][this.numeroAleatorio()] = cell;
         }     
     }
 
@@ -59,8 +65,9 @@ export class ServiceMinesweeperService {
         //arr[x][y]= new NiceCell(true)
         if (arr[x][y].getType() === TypeCell.BLANK) {
          // console.log(arr[x][y].getType());
-          
-          arr[x][y]= new NiceCell(true,TypeCell.NUM,0,this.generarId());
+         let cell =new NiceCell(true,TypeCell.NUM,0,this.generarId())
+         this.referenciasTablero.set(cell.myId,cell);
+          arr[x][y]= cell;
         }
         if (arr[x][y].getType() === TypeCell.NUM) {
           arr[x][y].addNumb(1)
@@ -84,6 +91,7 @@ export class ServiceMinesweeperService {
       return t
   
     }
+    referenciasTablero:Map<string,NiceCell>;
     tablero: NiceCell[][];
     
 }

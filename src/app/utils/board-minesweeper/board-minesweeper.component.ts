@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { filter, fromEvent, merge, Observable, race, Subject, takeUntil, tap } from 'rxjs';
-import { NiceCell } from '../interfaces/nice-cell.interface.class';
+import { filter, fromEvent, map, merge, Observable, pluck, race, Subject, takeUntil, takeWhile, tap } from 'rxjs';
+import { NiceCell, TypeCell } from '../interfaces/nice-cell.interface.class';
 import { ServiceMinesweeperService } from '../service-minesweeper.service';
 
 @Component({
@@ -24,13 +24,25 @@ export class BoardMinesweeperComponent implements OnInit,OnDestroy {
     ).pipe(
      
       filter((evnt)=>(this.isFromTable(evnt.target))),//filtramos las celdas del tablero de otros atravez del idUnico
+      map((data)=>{
+        let domId = this.getIDFromTarget(data.target);//a este punto no puede ser null el EventTarget
+        let item = this.serv.referenciasTablero.get(domId);
+        return {type:data.type,id:domId,item};//por pura comodidad
+      }),
+      takeWhile(it => it.item?.getType() != TypeCell.MINE),//la suerte toca la puerta    
       tap((data)=>{
         console.log(data);
-      }),
+        
+      })
     );
     
   }
-
+  private getIDFromTarget(element:EventTarget | null){
+    let item = element as any;//cosas del intelsense ?
+    item =item['id'];
+    return item;
+  }
+  
 
   ngOnInit(): void {
     this._gamecore$.pipe(takeUntil(this._destroyer$)).subscribe()
@@ -39,21 +51,8 @@ export class BoardMinesweeperComponent implements OnInit,OnDestroy {
     if (element==null) {
       return false;
     }
-
-    let item = element as any;//cosas del intelsense ?
-    item =item['id'];
-    let valido=false;
-    
-   for( let row of this.tablero){
-     for( let niceCell of row){
-        if (niceCell.myId===item) {
-          valido= true;
-          //console.log(niceCell.myId);
-          break;
-        }
-     }
-   }
-   return valido;
+    let item = this.getIDFromTarget(element)
+     return this.serv.referenciasTablero.has(item);
   }
   get tablero(){
     return this.serv.tablero;
