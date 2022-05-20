@@ -14,7 +14,11 @@ export class BoardMinesweeperComponent implements OnInit,OnDestroy {
   constructor(private serv:ServiceMinesweeperService) { 
     this._destroyer$= new Subject();
     //this._gamecore$=new Observable();
-    this._gamecore$= merge(
+    this._gamecore$= this.iniciarJuego();
+    
+  }
+  iniciarJuego(){
+    return merge(
       fromEvent(document, 'contextmenu').pipe(
         tap((evnt)=>{
           evnt.preventDefault();//segundo click evita el menu contextual
@@ -23,23 +27,47 @@ export class BoardMinesweeperComponent implements OnInit,OnDestroy {
       fromEvent(document, 'click')
     ).pipe(
      
-      filter((evnt)=>(this.isFromTable(evnt.target))),//filtramos las celdas del tablero de otros atravez del idUnico
+      filter((evnt)=>(this.isFromTable(evnt.target))),//filtramos las celdas del tablero de otros elementos
+      // atravez del idUnico
       map((data)=>{
         let domId = this.getIDFromTarget(data.target);//a este punto no puede ser null el EventTarget
         let item = this.serv.referenciasTablero.get(domId);
         return {type:data.type,id:domId,item};//por pura comodidad
       }),
+      tap((data)=>{//comportamiento para el segundo click el segundo click
+        if (data!=undefined && data.item!=undefined && data.type === 'contextmenu' && data.item.hide) {//es un segundo click
+          if (data.item.get2ndClick==0) {
+            //TODO
+
+            data.item.add2Click();
+            return;
+          }
+          if (data.item.get2ndClick==1) {
+            //TODO
+            data.item.add2Click();
+            return;
+          }
+          if (data.item.get2ndClick==2) {
+            //TODO
+            data.item.add2Click();
+            return;
+          }
+         
+        }
+      }),
       tap((data)=>{
-        if (data.item!=undefined) {//a este punto este if es al pedo, pero el el modo estricto no deja de jod ?
+       
+        
+        if (data.item!=undefined) {//a este punto este if inecesario, pero el el modo estricto no deja de jod ?
           this.descubir3x3(data.item);
         }
       }),
-      takeWhile(it => it.item?.getType() != TypeCell.MINE),//la suerte toca la puerta   
+      
+      takeWhile(it => it.item?.getType() != TypeCell.MINE),//la suerte golpea la puerta   
      
       //finalize()
      
     );
-    
   }
   private descubir3x3(cell:NiceCell){// estoy seguro que este no es el mejor camino para detectar las casillas
     //console.log(cell);
@@ -63,10 +91,6 @@ export class BoardMinesweeperComponent implements OnInit,OnDestroy {
     if ( cell!== undefined && cell!== undefined && cell.getType()==TypeCell.NUM && cell.hide==true) {
       this.tablero[cell.getX][cell.getY].setHide(false);
     }
-    
-   
-   
-    //this.marcarlugar(arr, ri + 1, ci - 1);
   }
   private getIDFromTarget(element:EventTarget | null){
     let item = element as any;//cosas del intelsense ?

@@ -5,7 +5,7 @@ export class NiceCell{
    
 
     constructor(private isHide:boolean,private type : TypeCell, private numero :number,private idUnico:string,private x:number, private y:number){
-       
+       this.secondClickCount=0;
     }
     
     getType() : TypeCell {
@@ -38,8 +38,17 @@ export class NiceCell{
     get getY(){
         return this.y;
     }
+    get get2ndClick(){
+        return this.secondClickCount;
+    }
+    reset2Count(){
+        this.secondClickCount=0;
+    }
+    add2Click(){
+        this.secondClickCount+=1;
+    }
 
-   
+    private secondClickCount:number;
  
     
 
