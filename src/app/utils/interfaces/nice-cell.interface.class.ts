@@ -1,7 +1,10 @@
+import { ElementRef } from "@angular/core";
+
 export class NiceCell{
+   
 
     constructor(private isHide:boolean,private type : TypeCell, private numero :number){
-
+        this.elemhtml=new ElementRef(null);
     }
     
     getType() : TypeCell {
@@ -25,7 +28,10 @@ export class NiceCell{
     setHide(hide:boolean){
         this.isHide=hide;
     }
-
+    setElement(el: ElementRef<any>) {
+        this.elemhtml=el;
+    }
+    private elemhtml:ElementRef;
     
 
 

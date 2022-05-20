@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { of, map, tap } from 'rxjs';
+import { of, map, tap, Subject } from 'rxjs';
 import { apprules } from './app-rules.rules';
 import { NiceCell, TypeCell } from './interfaces/nice-cell.interface.class';
 
@@ -7,12 +7,13 @@ import { NiceCell, TypeCell } from './interfaces/nice-cell.interface.class';
   providedIn: 'root'
 })
 export class ServiceMinesweeperService {
+  
 
-      constructor() {
-        this.tablero=[];
+    constructor() {
+      this.tablero=[];
+    }
 
-      }
-      prepararJuego(){
+    prepararJuego(){
         this.tablero= Array(apprules.tamano).fill(0);
         for (let index = 0; index < this.tablero.length; index++) {
           const array:NiceCell[] =[];
@@ -28,14 +29,14 @@ export class ServiceMinesweeperService {
       
       
 
-      private agregarMinas(arr: NiceCell[][]) {
+    private agregarMinas(arr: NiceCell[][]) {
         
         for (let i = 0; i < apprules.tamano ; i++) {
             arr[this.numeroAleatorio()][this.numeroAleatorio()] = new NiceCell(true,TypeCell.MINE,-1);
         }     
     }
 
-
+   
     private agregarnumeros(arr:NiceCell[][]) {
       for (let ri = 0; ri < apprules.tamano; ri++) {
         for (let ci = 0; ci < apprules.tamano; ci++) {
@@ -73,7 +74,7 @@ export class ServiceMinesweeperService {
     {
       return Math.floor(Math.random() * Math.floor(apprules.tamano));
     }
-    tablero: any[][];
+    tablero: NiceCell[][];
     
 }
 // totalmente no inspirado en https://www.learnrxjs.io/learn-rxjs/recipes/mine-sweeper-game 
