@@ -32,6 +32,12 @@ export class NiceCell{
     get myId(){
         return this.idUnico;
     }
+    get getX(){
+        return this.x;
+    }
+    get getY(){
+        return this.y;
+    }
 
    
  

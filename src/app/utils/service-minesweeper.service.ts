@@ -71,7 +71,7 @@ export class ServiceMinesweeperService {
          this.referenciasTablero.set(cell.myId,cell);
           arr[x][y]= cell;
         }
-        if (arr[x][y].getType() === TypeCell.NUM) {
+        if (arr[x][y].getType() == TypeCell.NUM) {
           arr[x][y].addNumb(1)
         }
       }

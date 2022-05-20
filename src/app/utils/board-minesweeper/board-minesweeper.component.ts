@@ -27,11 +27,12 @@ export class BoardMinesweeperComponent implements OnInit,OnDestroy {
       map((data)=>{
         let domId = this.getIDFromTarget(data.target);//a este punto no puede ser null el EventTarget
         let item = this.serv.referenciasTablero.get(domId);
-      
         return {type:data.type,id:domId,item};//por pura comodidad
       }),
       tap((data)=>{
-       this.calcularVacio(data as CellResult);
+        if (data.item!=undefined) {//a este punto este if es al pedo, pero el el modo estricto no deja de jod ?
+          this.descubir3x3(data.item);
+        }
       }),
       takeWhile(it => it.item?.getType() != TypeCell.MINE),//la suerte toca la puerta   
      
@@ -40,10 +41,32 @@ export class BoardMinesweeperComponent implements OnInit,OnDestroy {
     );
     
   }
-  private calcularVacio(item :CellResult){
-      console.log(item);
-      item.item.setHide(false)
+  private descubir3x3(cell:NiceCell){// estoy seguro que este no es el mejor camino para detectar las casillas
+    //console.log(cell);
+    
+    if ( cell!== undefined && cell!== undefined && cell.getType()==TypeCell.BLANK && cell.hide==true) {
+      this.tablero[cell.getX][cell.getY].setHide(false);
+      try {
+        this.descubir3x3(this.tablero[cell.getX - 1][cell.getY + 1])
+      this.descubir3x3(this.tablero[cell.getX - 1][cell.getY])
+      this.descubir3x3(this.tablero[cell.getX - 1][cell.getY -1])
+      this.descubir3x3(this.tablero[cell.getX ][cell.getY +1])
+      this.descubir3x3(this.tablero[cell.getX ][cell.getY -1])
+      this.descubir3x3(this.tablero[cell.getX + 1 ][cell.getY + 1])
+      this.descubir3x3(this.tablero[cell.getX + 1 ][cell.getY])
+      this.descubir3x3(this.tablero[cell.getX + 1 ][cell.getY -1])
+      } catch (error) {
+        //meh
+      }
       
+    }
+    if ( cell!== undefined && cell!== undefined && cell.getType()==TypeCell.NUM && cell.hide==true) {
+      this.tablero[cell.getX][cell.getY].setHide(false);
+    }
+    
+   
+   
+    //this.marcarlugar(arr, ri + 1, ci - 1);
   }
   private getIDFromTarget(element:EventTarget | null){
     let item = element as any;//cosas del intelsense ?
