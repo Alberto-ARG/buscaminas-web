@@ -13,25 +13,20 @@ export class BoardMinesweeperComponent implements OnInit,OnDestroy {
 
   constructor(private serv:ServiceMinesweeperService) { 
     this._destroyer$= new Subject();
-    this._gamecore$=new Observable();
+    //this._gamecore$=new Observable();
     this._gamecore$= merge(
-      fromEvent(document, 'contextmenu').pipe(//segundo click evita el menu contextual
+      fromEvent(document, 'contextmenu').pipe(
         tap((evnt)=>{
-          evnt.preventDefault();
-          console.log(evnt);
-          
+          evnt.preventDefault();//segundo click evita el menu contextual
         })
       ),
-      fromEvent(document, 'click').pipe(// click ordinario
-        tap((evnt)=>{
-          //evnt.preventDefault();
-          console.log(evnt);
-          
-        })
-      )
+      fromEvent(document, 'click')
     ).pipe(
-      
-
+     
+      filter((evnt)=>(this.isFromTable(evnt.target))),//filtramos las celdas del tablero de otros atravez del idUnico
+      tap((data)=>{
+        console.log(data);
+      }),
     );
     
   }
@@ -39,6 +34,26 @@ export class BoardMinesweeperComponent implements OnInit,OnDestroy {
 
   ngOnInit(): void {
     this._gamecore$.pipe(takeUntil(this._destroyer$)).subscribe()
+  }
+  private isFromTable(element:EventTarget | null){
+    if (element==null) {
+      return false;
+    }
+
+    let item = element as any;//cosas del intelsense ?
+    item =item['id'];
+    let valido=false;
+    
+   for( let row of this.tablero){
+     for( let niceCell of row){
+        if (niceCell.myId===item) {
+          valido= true;
+          //console.log(niceCell.myId);
+          break;
+        }
+     }
+   }
+   return valido;
   }
   get tablero(){
     return this.serv.tablero;

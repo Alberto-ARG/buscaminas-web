@@ -18,7 +18,7 @@ export class ServiceMinesweeperService {
         for (let index = 0; index < this.tablero.length; index++) {
           const array:NiceCell[] =[];
           for (let index = 0; index < apprules.tamano; index++) {
-            array.push(new NiceCell(true,TypeCell.BLANK,0));            
+            array.push(new NiceCell(true,TypeCell.BLANK,0,this.generarId()));            
           }
           this.tablero[index]=array;
         }
@@ -32,7 +32,7 @@ export class ServiceMinesweeperService {
     private agregarMinas(arr: NiceCell[][]) {
         
         for (let i = 0; i < apprules.tamano ; i++) {
-            arr[this.numeroAleatorio()][this.numeroAleatorio()] = new NiceCell(true,TypeCell.MINE,-1);
+            arr[this.numeroAleatorio()][this.numeroAleatorio()] = new NiceCell(true,TypeCell.MINE,-1,this.generarId());
         }     
     }
 
@@ -60,7 +60,7 @@ export class ServiceMinesweeperService {
         if (arr[x][y].getType() === TypeCell.BLANK) {
          // console.log(arr[x][y].getType());
           
-          arr[x][y]= new NiceCell(true,TypeCell.NUM,0);
+          arr[x][y]= new NiceCell(true,TypeCell.NUM,0,this.generarId());
         }
         if (arr[x][y].getType() === TypeCell.NUM) {
           arr[x][y].addNumb(1)
@@ -73,6 +73,16 @@ export class ServiceMinesweeperService {
     private numeroAleatorio()
     {
       return Math.floor(Math.random() * Math.floor(apprules.tamano));
+    }
+    private generarId(): string {//genera de 25 largo
+      var ee="0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+      for(var e=8,t="";e-- >0;)
+      {
+          t+=ee[62*Math.random()|0];
+        
+      }
+      return t
+  
     }
     tablero: NiceCell[][];
     

@@ -10,10 +10,10 @@ export class CellMinesweeperComponent implements OnInit {
   @Input()cellId:NiceCell;
  
   constructor(private el : ElementRef) {
-    this.cellId = new NiceCell(true,TypeCell.BLANK,0);
+    this.cellId = new NiceCell(true,TypeCell.BLANK,0,'NaN');
    }
 
   ngOnInit(): void {
   }
-  
+
 }
