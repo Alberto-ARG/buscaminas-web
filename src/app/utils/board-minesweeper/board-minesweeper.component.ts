@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { filter, fromEvent, map, merge, Observable, pluck, race, Subject, takeUntil, takeWhile, tap } from 'rxjs';
+import { filter, finalize, fromEvent, map, merge, Observable, pluck, race, Subject, takeUntil, takeWhile, tap } from 'rxjs';
 import { NiceCell, TypeCell } from '../interfaces/nice-cell.interface.class';
 import { ServiceMinesweeperService } from '../service-minesweeper.service';
 
@@ -15,6 +15,7 @@ export class BoardMinesweeperComponent implements OnInit,OnDestroy {
     this._destroyer$= new Subject();
     //this._gamecore$=new Observable();
     this._gamecore$= this.iniciarJuego();
+    this.mensajeGmO="";
     
   }
   iniciarJuego(){
@@ -36,43 +37,50 @@ export class BoardMinesweeperComponent implements OnInit,OnDestroy {
       }),
       tap((data)=>{//comportamiento para el segundo click el segundo click
         if (data!=undefined && data.item!=undefined && data.type === 'contextmenu' && data.item.hide) {//es un segundo click
+          console.log(data.item);
           if (data.item.get2ndClick==0) {
-            //TODO
+            //TODO // Bandera 
 
             data.item.add2Click();
             return;
           }
           if (data.item.get2ndClick==1) {
-            //TODO
+            //TODO // Signo Pregunta 
             data.item.add2Click();
             return;
           }
           if (data.item.get2ndClick==2) {
-            //TODO
-            data.item.add2Click();
+            //TODO //RESET
+            data.item.reset2Count();
             return;
           }
+          
+          
          
         }
       }),
+      filter((data)=>(data.type !== 'contextmenu')),//filtro los segundos click ya que no pueden terminar el juego
+      //de paso cierro la posibilidad de que descubran casilleros 
       tap((data)=>{
-       
+        //console.log(data);
         
-        if (data.item!=undefined) {//a este punto este if inecesario, pero el el modo estricto no deja de jod ?
+        if (data.item!=undefined) {
           this.descubir3x3(data.item);
         }
       }),
       
-      takeWhile(it => it.item?.getType() != TypeCell.MINE),//la suerte golpea la puerta   
+      takeWhile(it => ((it.item?.getType() != TypeCell.MINE))),//la suerte golpea la puerta   
      
-      //finalize()
+      finalize(()=>{
+        this.mensajeGmO ="FIN DEL JUEGO";
+      })
      
     );
   }
   private descubir3x3(cell:NiceCell){// estoy seguro que este no es el mejor camino para detectar las casillas
     //console.log(cell);
     
-    if ( cell!== undefined && cell!== undefined && cell.getType()==TypeCell.BLANK && cell.hide==true) {
+    if ( cell!== undefined && cell!== undefined && cell.getType()==TypeCell.BLANK && cell.hide==true && cell.get2ndClick==0) {
       this.tablero[cell.getX][cell.getY].setHide(false);
       try {
         this.descubir3x3(this.tablero[cell.getX - 1][cell.getY + 1])
@@ -88,7 +96,7 @@ export class BoardMinesweeperComponent implements OnInit,OnDestroy {
       }
       
     }
-    if ( cell!== undefined && cell!== undefined && cell.getType()==TypeCell.NUM && cell.hide==true) {
+    if ( cell!== undefined && cell!== undefined && cell.getType()==TypeCell.NUM && cell.hide==true  && cell.get2ndClick==0) {
       this.tablero[cell.getX][cell.getY].setHide(false);
     }
   }
@@ -121,6 +129,7 @@ export class BoardMinesweeperComponent implements OnInit,OnDestroy {
   
   private _gamecore$: Observable<any>;
   private _destroyer$:Subject<any>;
+  mensajeGmO:string;
 }
 interface CellResult{
   type:string,
