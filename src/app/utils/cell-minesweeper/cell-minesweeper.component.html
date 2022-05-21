@@ -1,6 +1,12 @@
 
-<div [id]="cellId.myId"  *ngIf="!cellId.hide" class="cell emptycell">
+<div [id]="cellId.myId"  *ngIf="!cellId.hide && cellId.getType()!=2 && cellId.num!=0" class="cell emptycell">
     {{cellId.num}}
+</div>
+<div [id]="cellId.myId"  *ngIf="!cellId.hide && cellId.getType()!=2 && cellId.num==0 " class="cell emptycell">
+  
+</div>
+<div [id]="cellId.myId"  *ngIf="!cellId.hide && cellId.getType()==2" class="cell mine">
+    
 </div>
 
 <div  [id]="cellId.myId"  *ngIf="cellId.hide && cellId.get2ndClick==1" class=" cell flag">

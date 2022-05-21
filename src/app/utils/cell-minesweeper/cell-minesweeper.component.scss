@@ -33,6 +33,13 @@
   background-repeat: no-repeat;
   background-position: center;
 }
+.mine{
+  width: 100%;
+  background-image: none;
+  background-image: url("../../../assets/land-mine-on-solid.svg");
+  background-repeat: no-repeat;
+  background-position: center;
+}
 .hidecell{
   background-color: beige;
 }

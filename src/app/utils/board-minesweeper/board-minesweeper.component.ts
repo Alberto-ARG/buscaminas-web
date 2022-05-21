@@ -72,13 +72,22 @@ export class BoardMinesweeperComponent implements OnInit,OnDestroy {
           this.descubir3x3(data.item);
         }
       }),
-      /*tap((data)=>{
-
-      }),*/
+      tap((data)=>{//descubrir mina
+        if (data.item!=undefined) {
+          if(data.item.getType()==TypeCell.MINE){
+            data.item.setHide(false);
+          }
+        }
+      }),
       
       takeWhile(it => ((it.item?.getType() != TypeCell.MINE))),//la suerte golpea la puerta   
      
       finalize(()=>{
+        this.serv.referenciasTablero.forEach((k,v)=>{
+         if ( k.getType()==TypeCell.MINE) {
+           k.setHide(false);
+         }
+        })
         this.mensajeGmO ="FIN DEL JUEGO";
       })
      
