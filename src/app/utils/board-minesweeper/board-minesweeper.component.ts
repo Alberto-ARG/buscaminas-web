@@ -40,12 +40,13 @@ export class BoardMinesweeperComponent implements OnInit,OnDestroy {
           console.log(data.item);
           if (data.item.get2ndClick==0) {
             //TODO // Bandera 
-
+            data.item.setBandera();
             data.item.add2Click();
             return;
           }
           if (data.item.get2ndClick==1) {
             //TODO // Signo Pregunta 
+            data.item.setSigno();
             data.item.add2Click();
             return;
           }
@@ -61,6 +62,9 @@ export class BoardMinesweeperComponent implements OnInit,OnDestroy {
       }),
       filter((data)=>(data.type !== 'contextmenu')),//filtro los segundos click ya que no pueden terminar el juego
       //de paso cierro la posibilidad de que descubran casilleros 
+      filter((data)=>( data.item?.get2ndClick!=undefined && data.item?.get2ndClick!=1)),
+      //si hago click derecho en una mina con bandera que lo filtre que no lo descubra
+
       tap((data)=>{
         //console.log(data);
         
