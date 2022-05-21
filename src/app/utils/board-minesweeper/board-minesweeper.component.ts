@@ -10,12 +10,14 @@ import { ServiceMinesweeperService } from '../service-minesweeper.service';
 })
 export class BoardMinesweeperComponent implements OnInit,OnDestroy {
   
+  
 
   constructor(private serv:ServiceMinesweeperService) { 
     this._destroyer$= new Subject();
     //this._gamecore$=new Observable();
     this._gamecore$= this.iniciarJuego();
     this.mensajeGmO="";
+    this.victoria=false;
     
   }
   iniciarJuego(){
@@ -55,12 +57,41 @@ export class BoardMinesweeperComponent implements OnInit,OnDestroy {
             data.item.reset2Count();
             return;
           }
-          
-          
-         
         }
       }),
-      filter((data)=>(data.type !== 'contextmenu')),//filtro los segundos click ya que no pueden terminar el juego
+      map((data)=> { //busca victoria
+        let victory=true;
+        let countMines=0;
+        let countMinesMark=0;
+
+        for (let j = 0; j < this.tablero.length; j++) {
+          for (let k = 0; k < this.tablero.length; k++) {
+            let element = this.tablero[j][k];
+            if (element.getType()==TypeCell.MINE) {
+              countMines++;
+              if (element.get2ndClick>0) {
+                countMinesMark++;
+              }
+            }
+            
+          }
+          
+        }
+        if (countMines==countMinesMark) {
+          victory=false;
+          this.victoria=victory;
+        }
+         
+        
+         this.victoria=victory;
+        //console.log(victory);
+         
+         
+        return {type:data.type,id:data.id,item:data.item,victory: victory};
+      }),
+      takeWhile(it => (it.victory!=false)),//la buena suerte golpea la puerta  
+
+      filter((data)=>(data.type !== 'contextmenu')),//filtro los segundos click si no esta terminado el juego
       //de paso cierro la posibilidad de que descubran casilleros 
       filter((data)=>( data.item?.get2ndClick!=undefined && data.item?.get2ndClick!=1)),
       //si hago click derecho en una mina con bandera que lo filtre que no lo descubra
@@ -79,8 +110,10 @@ export class BoardMinesweeperComponent implements OnInit,OnDestroy {
           }
         }
       }),
-      
-      takeWhile(it => ((it.item?.getType() != TypeCell.MINE))),//la suerte golpea la puerta   
+     
+     
+    
+      takeWhile(it => ((it.item?.getType() != TypeCell.MINE))),//la mala suerte golpea la puerta   
      
       finalize(()=>{
         this.serv.referenciasTablero.forEach((k,v)=>{
@@ -88,11 +121,23 @@ export class BoardMinesweeperComponent implements OnInit,OnDestroy {
            k.setHide(false);
          }
         })
-        this.mensajeGmO ="FIN DEL JUEGO";
+        if (this.victoria==false) {
+          this.mensajeGmO ="BIEN JUGADO!!";
+        }
+        else{
+          this.mensajeGmO="FIN DEL JUEGO"
+        }
+
       })
      
     );
   }
+  private buscarVictoria(){
+ 
+ 
+     
+  }
+
   private descubir3x3(cell:NiceCell){// estoy seguro que este no es el mejor camino para detectar las casillas
     //console.log(cell);
     
@@ -146,6 +191,7 @@ export class BoardMinesweeperComponent implements OnInit,OnDestroy {
   private _gamecore$: Observable<any>;
   private _destroyer$:Subject<any>;
   mensajeGmO:string;
+  victoria: boolean;
 }
 interface CellResult{
   type:string,
