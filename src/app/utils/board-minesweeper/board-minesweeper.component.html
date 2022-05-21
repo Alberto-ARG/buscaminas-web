@@ -1,3 +1,11 @@
+<div class="utils">
+    <button (click)="resetGame()">Reiniciar</button>
+    <div class="tiempo">
+        Tiempo : {{texttiempo}}
+    </div>
+</div>
+
+
 <div class="tablero">
     <div *ngFor="let row of tablero" class="row">
         <div *ngFor="let cell of row" class="row-nested">

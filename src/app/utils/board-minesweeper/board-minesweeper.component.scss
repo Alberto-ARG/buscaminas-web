@@ -27,3 +27,26 @@
 .vic{
     color: green;
 }
+button{
+    background-color: whitesmoke;
+    border: none;
+    margin: 0;
+    padding: 0;
+    padding: 1em;
+}
+button:hover{
+    background-color: black;
+    color: white;
+}
+.utils{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    align-content: center;
+    margin-bottom: 1em;
+    & .tiempo{
+        font-size: 20px;
+        
+    }
+}

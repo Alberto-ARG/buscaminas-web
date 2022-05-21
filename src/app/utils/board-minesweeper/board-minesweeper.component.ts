@@ -2,13 +2,15 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { filter, finalize, fromEvent, map, merge, Observable, pluck, race, Subject, takeUntil, takeWhile, tap } from 'rxjs';
 import { NiceCell, TypeCell } from '../interfaces/nice-cell.interface.class';
 import { ServiceMinesweeperService } from '../service-minesweeper.service';
-
+import { Moment } from 'moment';
+import * as moment from 'moment';
 @Component({
   selector: 'board-minesweeper',
   templateUrl: './board-minesweeper.component.html',
   styleUrls: ['./board-minesweeper.component.scss']
 })
 export class BoardMinesweeperComponent implements OnInit,OnDestroy {
+  
   
   
 
@@ -18,6 +20,10 @@ export class BoardMinesweeperComponent implements OnInit,OnDestroy {
     this._gamecore$= this.iniciarJuego();
     this.mensajeGmO="";
     this.victoria=false;
+    this.tiempo= moment();
+    this.starT=false;
+    this.interval = window.setInterval(() => { this.getmyTiempo() }, 1000);
+    this.texttiempo='';
     
   }
   iniciarJuego(){
@@ -29,10 +35,15 @@ export class BoardMinesweeperComponent implements OnInit,OnDestroy {
       ),
       fromEvent(document, 'click')
     ).pipe(
-     
+      
       filter((evnt)=>(this.isFromTable(evnt.target))),//filtramos las celdas del tablero de otros elementos
       // atravez del idUnico
+      
       map((data)=>{
+        if (this.starT==false) {//inicia el tiempo
+          this.tiempo= moment();
+          this.starT=true;
+        }
         let domId = this.getIDFromTarget(data.target);//a este punto no puede ser null el EventTarget
         let item = this.serv.referenciasTablero.get(domId);
         return {type:data.type,id:domId,item};//por pura comodidad
@@ -116,6 +127,7 @@ export class BoardMinesweeperComponent implements OnInit,OnDestroy {
       takeWhile(it => ((it.item?.getType() != TypeCell.MINE))),//la mala suerte golpea la puerta   
      
       finalize(()=>{
+        window.clearInterval(this.interval);
         this.serv.referenciasTablero.forEach((k,v)=>{
          if ( k.getType()==TypeCell.MINE) {
            k.setHide(false);
@@ -131,11 +143,6 @@ export class BoardMinesweeperComponent implements OnInit,OnDestroy {
       })
      
     );
-  }
-  private buscarVictoria(){
- 
- 
-     
   }
 
   private descubir3x3(cell:NiceCell){// estoy seguro que este no es el mejor camino para detectar las casillas
@@ -181,17 +188,41 @@ export class BoardMinesweeperComponent implements OnInit,OnDestroy {
   }
 
   ngOnInit(): void {
-    this._gamecore$.pipe(takeUntil(this._destroyer$)).subscribe()
+    //this._gamecore$.pipe(takeUntil(this._destroyer$)).subscribe()
+    this.resetGame();
+  }
+  getmyTiempo() 
+  {
+    if (this.starT==true) {
+      this.texttiempo=moment().diff(this.tiempo,'seconds').toString();
+    }
+    else{
+      this.texttiempo="..."
+    }
+   
   }
   ngOnDestroy(): void {
 
     this._destroyer$.complete();
+  }
+  resetGame(){
+    
+    this._gamecore$=this.iniciarJuego();
+    this.interval = window.setInterval(() => { this.getmyTiempo() }, 1000);
+    this.serv.prepararJuego();
+    this.starT=false;
+    this.mensajeGmO="";
+    this._gamecore$.pipe(takeUntil(this._destroyer$)).subscribe()
   }
   
   private _gamecore$: Observable<any>;
   private _destroyer$:Subject<any>;
   mensajeGmO:string;
   victoria: boolean;
+  private tiempo : Moment;
+  private starT: boolean;
+  private interval:number;
+  texttiempo:string;
 }
 interface CellResult{
   type:string,
