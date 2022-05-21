@@ -37,7 +37,7 @@ export class BoardMinesweeperComponent implements OnInit,OnDestroy {
       }),
       tap((data)=>{//comportamiento para el segundo click el segundo click
         if (data!=undefined && data.item!=undefined && data.type === 'contextmenu' && data.item.hide) {//es un segundo click
-          console.log(data.item);
+          //console.log(data.item);
           if (data.item.get2ndClick==0) {
             //TODO // Bandera 
             data.item.setBandera();
@@ -72,6 +72,9 @@ export class BoardMinesweeperComponent implements OnInit,OnDestroy {
           this.descubir3x3(data.item);
         }
       }),
+      /*tap((data)=>{
+
+      }),*/
       
       takeWhile(it => ((it.item?.getType() != TypeCell.MINE))),//la suerte golpea la puerta   
      
@@ -84,7 +87,7 @@ export class BoardMinesweeperComponent implements OnInit,OnDestroy {
   private descubir3x3(cell:NiceCell){// estoy seguro que este no es el mejor camino para detectar las casillas
     //console.log(cell);
     
-    if ( cell!== undefined && cell!== undefined && cell.getType()==TypeCell.BLANK && cell.hide==true && cell.get2ndClick==0) {
+    if ( cell!== undefined && cell!== undefined && cell.getType()==TypeCell.BLANK && cell.hide==true && (cell.get2ndClick==0 || cell.get2ndClick==2) ) {
       this.tablero[cell.getX][cell.getY].setHide(false);
       try {
         this.descubir3x3(this.tablero[cell.getX - 1][cell.getY + 1])
@@ -100,7 +103,7 @@ export class BoardMinesweeperComponent implements OnInit,OnDestroy {
       }
       
     }
-    if ( cell!== undefined && cell!== undefined && cell.getType()==TypeCell.NUM && cell.hide==true  && cell.get2ndClick==0) {
+    if ( cell!== undefined && cell!== undefined && cell.getType()==TypeCell.NUM && cell.hide==true  && (cell.get2ndClick==0 || cell.get2ndClick==2)) {
       this.tablero[cell.getX][cell.getY].setHide(false);
     }
   }

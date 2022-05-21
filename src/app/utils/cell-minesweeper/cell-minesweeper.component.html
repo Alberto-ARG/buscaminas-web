@@ -1,11 +1,15 @@
 
-<div [id]="cellId.myId" class="cell">
- 
-
-    <div *ngIf="!cellId.hide" class=" somecell">
-        {{cellId.num}}
-    </div>
-    <div *ngIf="cellId.hide" class="  emptycell">
-        <br>
-    </div>
+<div [id]="cellId.myId"  *ngIf="!cellId.hide" class="cell emptycell">
+    {{cellId.num}}
 </div>
+
+<div  [id]="cellId.myId"  *ngIf="cellId.hide && cellId.get2ndClick==1" class=" cell flag">
+    
+</div>
+<div  [id]="cellId.myId"  *ngIf="cellId.hide && cellId.get2ndClick==2" class=" cell question">
+    
+</div>
+<div  [id]="cellId.myId"  *ngIf="cellId.hide && cellId.get2ndClick==0" class="cell hidecell">
+     
+</div>
+
